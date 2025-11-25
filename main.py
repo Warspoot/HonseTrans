@@ -4,6 +4,13 @@ import toml
 
 raw_json = "raw/example.json"
 
+with open("dictionary.json", "r", encoding="utf-8") as file:
+    dictionary = json.load(file)
+    dictionary_json_str = json.dumps(dictionary, ensure_ascii = False)
+
+with open("config.toml", "r") as f:
+    config = toml.load(f)
+
 def process_json():
     print("Loading Json")
     count = -1
@@ -15,6 +22,8 @@ def process_json():
         try:
             print("Name: ",raw_load["text"][count]["jpName"])
             enName = translate(raw_load["text"][count]["jpName"])
+            if enName == "Monologue":
+                enName = " "
             raw_load["text"][count]["enName"] = enName
 
             print("Text: ",raw_load["text"][count]["jpText"])
@@ -42,8 +51,6 @@ def process_json():
 
 
 def translate(rawText):
-    with open("config.toml", "r") as f:
-     config = toml.load(f)
     api_key = config["server"]["api_key"]
     headers = {
         "Content-Type": "application/json",
@@ -58,7 +65,7 @@ def translate(rawText):
                 "role": "user", "content": rawText
             },
             {
-                "role" : "system", "content" : config["server"]["system_prompt"]
+                "role" : "system", "content" : f"{config['server']['system_prompt']} Refer to below for a dictionary in json format with the order japanese_text : english_text. (example\"ミホノブルボン\": \"Mihono Bourbon\", which means translate ミホノブルボン to Mihono Bourbon. \n {dictionary_json_str} \n translate the below text",
             }
         ],
         "max_completion_tokens" : "300",

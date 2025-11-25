@@ -25,10 +25,12 @@ def process_json(file_path):
             enName = translate(raw_load["text"][count]["jpName"])
             if enName == "Monologue":
                 enName = " "
+            enName = enName.replace("\n### Response:\n", "")    
             raw_load["text"][count]["enName"] = enName
 
             print("Text: ",raw_load["text"][count]["jpText"])
             enText = translate(raw_load["text"][count]["jpText"])
+            enText = enText.replace("\n### Response:\n", "")    
             raw_load["text"][count]["enText"] = enText
         except IndexError: 
             print("Finished!")
@@ -36,10 +38,12 @@ def process_json(file_path):
         try:
             print("Choice: ",raw_load["text"][count]["choices"][0]["jpText"])
             enText = translate(raw_load["text"][count]["choices"][0]["jpText"])
+            enText = enText.replace("\n### Response:\n", "")    
             raw_load["text"][count]["choices"][0]["enText"] = enText
 
             print("Choice: ",raw_load["text"][count]["choices"][1]["jpText"])
             enText = translate(raw_load["text"][count]["choices"][1]["jpText"])
+            enText = enText.replace("\n### Response:\n", "")    
             raw_load["text"][count]["choices"][1]["enText"] = enText
         except KeyError:
             print("No choice")

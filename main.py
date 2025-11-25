@@ -3,33 +3,41 @@ import requests
 import toml
 
 raw_json = "raw/example.json"
-translate_string = "驚くほど前向きで、頑張り屋で、地力が高い"
 
 def process_json():
     print("Loading Json")
     count = -1
     with open(raw_json, "r", encoding="utf-8") as file:
         raw_load = json.load(file)
-        run = True
-        while run == True:
-            count = count + 1
-            try:
-                print("Name: ",raw_load["text"][count]["jpName"])
-                translate(raw_load["text"][count]["jpName"])
-                print("Text: ",raw_load["text"][count]["jpText"])
-                translate(raw_load["text"][count]["jpText"])
-            except IndexError: 
-                print("Finished!")
-                break
-            try:
-                print("Choice: ",raw_load["text"][count]["choices"][0]["jpText"])
-                translate(raw_load["text"][count]["choices"][0]["jpText"])
-                print("Choice: ",raw_load["text"][count]["choices"][1]["jpText"])
-                translate(raw_load["text"][count]["choices"][1]["jpText"])
-            except KeyError:
-                print("No choice")
-            except IndexError:
-                print("Only one choice")
+
+    while True:
+        count = count + 1
+        try:
+            print("Name: ",raw_load["text"][count]["jpName"])
+            enName = translate(raw_load["text"][count]["jpName"])
+            raw_load["text"][count]["enName"] = enName
+
+            print("Text: ",raw_load["text"][count]["jpText"])
+            enText = translate(raw_load["text"][count]["jpText"])
+            raw_load["text"][count]["enText"] = enText
+        except IndexError: 
+            print("Finished!")
+            break
+        try:
+            print("Choice: ",raw_load["text"][count]["choices"][0]["jpText"])
+            enText = translate(raw_load["text"][count]["choices"][0]["jpText"])
+            raw_load["text"][count]["choices"][0]["enText"] = enText
+
+            print("Choice: ",raw_load["text"][count]["choices"][1]["jpText"])
+            enText = translate(raw_load["text"][count]["choices"][1]["jpText"])
+            raw_load["text"][count]["choices"][1]["enText"] = enText
+        except KeyError:
+            print("No choice")
+        except IndexError:
+            print("Only one choice")
+
+    with open(raw_json, "w", encoding="utf-8") as file:
+        json.dump(raw_load, file, indent=4, ensure_ascii=False) 
 
 
 
@@ -73,6 +81,8 @@ def translate(rawText):
         json = post_request
     )
     json_traslated = response.json()
-    print(json_traslated["choices"][0]["message"]["content"])
+    trans_text = json_traslated["choices"][0]["message"]["content"]
+    print(f"Translation: {trans_text}")
+    return trans_text
 
 process_json()

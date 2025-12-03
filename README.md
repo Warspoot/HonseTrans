@@ -4,16 +4,16 @@ a silly script for using a LLM to translate silly honse game
 ## Usage
 This repo works best when paired with an lm studio server
 ### Config
-The following Scripts require a config.toml file with parameters:
+The following Scripts require a config.toml file with parameters (as an example):
 ```
 api_url = "http://127.0.0.1:1234/v1/chat/completions"
 api_key = "key"
 model = "model_name"
-temperature = float
-nax_tokens = int
-top_p = float
-top_k = float
-repetition_penalty = float
+temperature = 0.1
+max_tokens = 3000
+top_p = 0.95
+top_k = 40
+repetition_penalty = 1.1
 ```
 
 ### Story Files

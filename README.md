@@ -16,7 +16,7 @@ top_k = 40
 repetition_penalty = 1.1
 ```
 
-### Story Files
+### Story/Home Files
 Use UmaTL Tools to extract files from the game and place in the raw folder\
 It should use a similar format to the "example.json" file\
 **run ```py main.py```**\

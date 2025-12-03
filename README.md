@@ -26,3 +26,5 @@ It should use a similar format to the "example.json" file\
 Find a way to extract the character system text from the game in hachimi format and place it in the root directory with file name "character_system_text.json". Can also add an already existing "character_system_text_dict.json" where the script will avoid duplicate translations and append the new translations to it.\
 **run ```py translate_character_system.py```**
 
+###Post Cleaning Scripts
+Names should be self explanatory.
